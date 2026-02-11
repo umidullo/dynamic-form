@@ -1,4 +1,4 @@
-import { DynamicForm } from '@/components/custom/dynamic-form/Form'
+import { DynamicForm } from '@/components/custom/dynamic-form/DynamicForm'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/document/$id')({

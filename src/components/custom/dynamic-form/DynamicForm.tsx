@@ -4,22 +4,13 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldLegend,
   FieldSeparator,
   FieldSet,
 } from '@/components/ui/field'
@@ -51,7 +42,7 @@ const formValueSchema = z
     is_mandatory: z.boolean(),
   })
   .refine(
-    (item) => item.field_type !== '1' || Boolean(item.select_values?.trim()),
+    (item) => item.field_type !== '2' || Boolean(item.select_values?.trim()),
     {
       message: 'Select options are required for Select field',
       path: ['select_values'],
@@ -79,7 +70,7 @@ export function DynamicForm() {
     } as z.infer<typeof formSchema>,
   })
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append } = useFieldArray({
     control: form.control,
     name: 'form_values',
   })
