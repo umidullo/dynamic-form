@@ -26,7 +26,10 @@ import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { selectOptions } from '@/components/custom/dynamic-form/constants'
+import {
+  defaultValues,
+  selectOptions,
+} from '@/components/custom/dynamic-form/constants'
 import { formSchema } from '@/components/custom/dynamic-form/types'
 import { useMutation } from '@tanstack/react-query'
 import { createDocument } from '@/api/queries'
@@ -38,17 +41,7 @@ export function DynamicForm() {
   const navigate = useNavigate()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      document_name: '',
-      form_values: [
-        {
-          field_name: '',
-          field_seq: 1,
-          field_type: '1',
-          is_mandatory: true,
-        },
-      ],
-    } as z.infer<typeof formSchema>,
+    defaultValues: defaultValues,
   })
 
   const { fields, append } = useFieldArray({

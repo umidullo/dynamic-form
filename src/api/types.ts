@@ -20,7 +20,26 @@ const documentResponseSchema = z.object({
   timestamp: z.string(),
 })
 
+const documentByIdFieldSchema = z.object({
+  document_id: z.number(),
+  field_name: z.string(),
+  field_seq: z.number(),
+  field_type: z.number(),
+  select_values: z.any().nullable(),
+  is_mandatory: z.boolean(),
+})
+
+const documentByIdResponseSchema = z.object({
+  data: z.object({
+    documentName: z.string(),
+    fields: z.array(documentByIdFieldSchema),
+  }),
+  success: z.boolean(),
+  timestamp: z.string(),
+})
+
 export type TDocumentResponse = z.infer<typeof documentResponseSchema>
+export type TDocumentByIdResponse = z.infer<typeof documentByIdResponseSchema>
 
 const documentCreateBodySchema = z.object({
   document_name: z.string(),

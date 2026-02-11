@@ -11,14 +11,20 @@ import {
 import { formatDate } from '@/lib/utils'
 import { Link } from '@tanstack/react-router'
 import { getDocuments } from '@/api/queries'
+import { Spinner } from '@/components/ui/spinner'
 
 export function DocumentTable() {
-  const { isPending, error, data, isFetching } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['documents'],
     queryFn: getDocuments,
   })
 
-  console.log(data)
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center h-40">
+        <Spinner data-icon="inline" />
+      </div>
+    )
 
   return (
     <Table className="border">

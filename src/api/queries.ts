@@ -1,4 +1,8 @@
-import type { TDocumentBody, TDocumentResponse } from '@/api/types'
+import type {
+  TDocumentBody,
+  TDocumentByIdResponse,
+  TDocumentResponse,
+} from '@/api/types'
 import { API_BASE_URL } from '@/api/constants'
 
 export const getDocuments = async (): Promise<TDocumentResponse> => {
@@ -8,7 +12,7 @@ export const getDocuments = async (): Promise<TDocumentResponse> => {
 
 export const getDocumentById = async (
   id: number,
-): Promise<TDocumentResponse> => {
+): Promise<TDocumentByIdResponse> => {
   const response = await fetch(`${API_BASE_URL}/document/${id}`)
   return await response.json()
 }
