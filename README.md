@@ -9,6 +9,4 @@ npm install
 npm run dev
 ```
 
-# TODO
-
-[] - Validate select input string
+completed in 6 hours 38 minutes
