@@ -7,7 +7,7 @@ export const Route = createFileRoute('/form')({
 
 function DocumnetForm() {
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-screen h-screen flex items-center justify-center overflow-hidden">
       <DynamicForm />
     </div>
   )

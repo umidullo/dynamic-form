@@ -20,6 +20,7 @@ import {
   FieldGroup,
   FieldLabel,
   FieldLegend,
+  FieldSeparator,
   FieldSet,
 } from '@/components/ui/field'
 
@@ -33,6 +34,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 const selectOptions = [
   { label: 'Input', value: '1' },
@@ -88,95 +90,51 @@ export function DynamicForm() {
 
   return (
     <Card className="w-full sm:max-w-md">
-      <CardHeader className="border-b">
-        <CardTitle>Contact Emails</CardTitle>
-        <CardDescription>Manage your contact email addresses.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form id="form-rhf-array" onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldSet className="gap-4">
-            <FieldLegend variant="label">Email Addresses</FieldLegend>
-            <FieldDescription>
-              Add up to 5 email addresses where we can contact you.
-            </FieldDescription>
-            {fields.map((field, index) => {
-              const type = form.watch(`form_values.${index}.field_type`)
+      <ScrollArea className="h-[500px]">
+        <CardContent>
+          <form id="form-rhf-array" onSubmit={form.handleSubmit(onSubmit)}>
+            <FieldSet className="gap-4">
+              <Controller
+                name={`document_name`}
+                control={form.control}
+                render={({ field: controllerField, fieldState }) => (
+                  <Field
+                    orientation="vertical"
+                    data-invalid={fieldState.invalid}
+                  >
+                    <FieldLabel>Document title</FieldLabel>
+                    <FieldContent>
+                      <Input
+                        {...controllerField}
+                        aria-invalid={fieldState.invalid}
+                      />
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </FieldContent>
+                  </Field>
+                )}
+              />
+              <FieldSeparator />
+              {fields.map((field, index) => {
+                const type = form.watch(`form_values.${index}.field_type`)
 
-              return (
-                <FieldGroup key={field.id} className="gap-4">
-                  <Controller
-                    name={`form_values.${index}.field_seq`}
-                    control={form.control}
-                    render={({ field: controllerField, fieldState }) => (
-                      <Field
-                        orientation="horizontal"
-                        data-invalid={fieldState.invalid}
-                      >
-                        <FieldContent>
-                          <Input
-                            {...controllerField}
-                            id={`form-rhf-array-field-seq-${index}`}
-                            aria-invalid={fieldState.invalid}
-                          />
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                          )}
-                        </FieldContent>
-                      </Field>
-                    )}
-                  />
-                  <Controller
-                    name={`form_values.${index}.field_type`}
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field
-                        orientation="horizontal"
-                        data-invalid={fieldState.invalid}
-                      >
-                        <FieldContent>
-                          <Select
-                            name={field.name}
-                            value={field.value}
-                            onValueChange={field.onChange}
-                          >
-                            <SelectTrigger
-                              id="form-rhf-select-language"
-                              aria-invalid={fieldState.invalid}
-                              className="w-full"
-                            >
-                              <SelectValue placeholder="Select" />
-                            </SelectTrigger>
-                            <SelectContent position="item-aligned">
-                              {selectOptions.map((language) => (
-                                <SelectItem
-                                  key={language.value}
-                                  value={language.value}
-                                >
-                                  {language.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                          )}
-                        </FieldContent>
-                      </Field>
-                    )}
-                  />
-                  {type === '2' && (
+                return (
+                  <FieldGroup key={field.id} className="gap-4">
                     <Controller
-                      name={`form_values.${index}.field_type`}
+                      name={`form_values.${index}.field_seq`}
                       control={form.control}
                       render={({ field: controllerField, fieldState }) => (
                         <Field
-                          orientation="horizontal"
+                          orientation="vertical"
                           data-invalid={fieldState.invalid}
                         >
+                          <FieldLabel>Field sequence (weight)</FieldLabel>
+
                           <FieldContent>
-                            <Textarea
-                              placeholder="Type your options here"
+                            <Input
                               {...controllerField}
+                              aria-invalid={fieldState.invalid}
                             />
                             {fieldState.invalid && (
                               <FieldError errors={[fieldState.error]} />
@@ -185,58 +143,124 @@ export function DynamicForm() {
                         </Field>
                       )}
                     />
-                  )}
-                  <Controller
-                    name={`form_values.${index}.field_name`}
-                    control={form.control}
-                    render={({ field: controllerField, fieldState }) => (
-                      <Field
-                        orientation="horizontal"
-                        data-invalid={fieldState.invalid}
-                      >
-                        <FieldContent>
-                          <Input
-                            {...controllerField}
-                            id={`form-rhf-array-field-name-${index}`}
-                            aria-invalid={fieldState.invalid}
+                    <Controller
+                      name={`form_values.${index}.field_type`}
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field
+                          orientation="vertical"
+                          data-invalid={fieldState.invalid}
+                        >
+                          <FieldLabel>Field type</FieldLabel>
+
+                          <FieldContent>
+                            <Select
+                              name={field.name}
+                              value={field.value}
+                              onValueChange={field.onChange}
+                            >
+                              <SelectTrigger
+                                aria-invalid={fieldState.invalid}
+                                className="w-full"
+                              >
+                                <SelectValue placeholder="Select" />
+                              </SelectTrigger>
+                              <SelectContent position="item-aligned">
+                                {selectOptions.map((language) => (
+                                  <SelectItem
+                                    key={language.value}
+                                    value={language.value}
+                                  >
+                                    {language.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            {fieldState.invalid && (
+                              <FieldError errors={[fieldState.error]} />
+                            )}
+                          </FieldContent>
+                        </Field>
+                      )}
+                    />
+                    {type === '2' && (
+                      <Controller
+                        name={`form_values.${index}.field_type`}
+                        control={form.control}
+                        render={({ field: controllerField, fieldState }) => (
+                          <Field
+                            orientation="vertical"
+                            data-invalid={fieldState.invalid}
+                          >
+                            <FieldLabel>Select options</FieldLabel>
+
+                            <FieldContent>
+                              <Textarea
+                                placeholder="Type your options here"
+                                {...controllerField}
+                              />
+                              {fieldState.invalid && (
+                                <FieldError errors={[fieldState.error]} />
+                              )}
+                            </FieldContent>
+                          </Field>
+                        )}
+                      />
+                    )}
+                    <Controller
+                      name={`form_values.${index}.field_name`}
+                      control={form.control}
+                      render={({ field: controllerField, fieldState }) => (
+                        <Field
+                          orientation="vertical"
+                          data-invalid={fieldState.invalid}
+                        >
+                          <FieldLabel>Field name</FieldLabel>
+
+                          <FieldContent>
+                            <Input
+                              {...controllerField}
+                              aria-invalid={fieldState.invalid}
+                            />
+                            {fieldState.invalid && (
+                              <FieldError errors={[fieldState.error]} />
+                            )}
+                          </FieldContent>
+                        </Field>
+                      )}
+                    />
+                    <Controller
+                      name={`form_values.${index}.is_mandatory`}
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field
+                          orientation="horizontal"
+                          data-invalid={fieldState.invalid}
+                        >
+                          <Checkbox
+                            checked={field.value}
+                            onChange={field.onChange}
                           />
+                          <FieldLabel className="font-normal">
+                            Mandatory
+                          </FieldLabel>
                           {fieldState.invalid && (
                             <FieldError errors={[fieldState.error]} />
                           )}
-                        </FieldContent>
-                      </Field>
-                    )}
-                  />
-                  <Controller
-                    name={`form_values.${index}.is_mandatory`}
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field
-                        orientation="horizontal"
-                        data-invalid={fieldState.invalid}
-                      >
-                        <Checkbox
-                          checked={field.value}
-                          onChange={field.onChange}
-                        />
-                        <FieldLabel className="font-normal">
-                          Mandatory
-                        </FieldLabel>
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
-                  />
-                </FieldGroup>
-              )
-            })}
-            {/* {form.formState.errors.document_name?.root && (
+                        </Field>
+                      )}
+                    />
+                    <FieldSeparator />
+                  </FieldGroup>
+                )
+              })}
+              {/* {form.formState.errors.document_name?.root && (
               <FieldError errors={[form.formState.errors.document_name.root]} />
             )} */}
-          </FieldSet>
-        </form>
-      </CardContent>
+            </FieldSet>
+          </form>
+        </CardContent>
+      </ScrollArea>
       <CardFooter className="border-t">
         <Field orientation="horizontal">
           <Button
