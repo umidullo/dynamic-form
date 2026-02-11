@@ -46,7 +46,9 @@ export function DocumentTable() {
             <TableCell>{document.field_count}</TableCell>
             <TableCell>
               <Button asChild variant={'link'}>
-                <Link to={`/document/${document.id}`}>Document preview</Link>
+                <Link to={`/document/$id`} params={{ id: String(document.id) }}>
+                  Document preview
+                </Link>
               </Button>
             </TableCell>
           </TableRow>

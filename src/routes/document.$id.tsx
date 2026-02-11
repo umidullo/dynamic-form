@@ -60,7 +60,7 @@ function RouteComponent() {
                 </FieldLabel>
                 {field.field_type === 2 ? (
                   <Select>
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-45">
                       <SelectValue placeholder="Select an option" />
                     </SelectTrigger>
                     <SelectContent>
