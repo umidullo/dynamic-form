@@ -185,7 +185,7 @@ export function DynamicForm() {
                     />
                     {type === '2' && (
                       <Controller
-                        name={`form_values.${index}.field_type`}
+                        name={`form_values.${index}.select_values`}
                         control={form.control}
                         render={({ field: controllerField, fieldState }) => (
                           <Field
