@@ -67,7 +67,9 @@ export function DynamicForm() {
         field_type: Number(field.field_type),
         field_name: field.field_name,
         is_mandatory: field.is_mandatory,
-        select_values: field.select_values ?? null,
+        select_values: field.select_values
+          ? JSON.parse(field.select_values)
+          : null,
       })),
     }
     mutation.mutate(createInput)
@@ -151,11 +153,8 @@ export function DynamicForm() {
                                 <SelectValue placeholder="Select" />
                               </SelectTrigger>
                               <SelectContent position="item-aligned">
-                                {selectOptions.map((option) => (
-                                  <SelectItem
-                                    key={option.value}
-                                    value={option.value}
-                                  >
+                                {selectOptions.map((option, index) => (
+                                  <SelectItem key={index} value={option.value}>
                                     {option.label}
                                   </SelectItem>
                                 ))}
@@ -240,15 +239,13 @@ export function DynamicForm() {
                   </FieldGroup>
                 )
               })}
-              {/* {form.formState.errors.document_name?.root && (
-              <FieldError errors={[form.formState.errors.document_name.root]} />
-            )} */}
             </FieldSet>
           </form>
         </CardContent>
       </ScrollArea>
       <CardFooter className="border-t">
         <Field orientation="horizontal">
+          <Button onClick={() => navigate({ to: '/' })}>Back</Button>
           <Button
             type="button"
             variant="outline"
