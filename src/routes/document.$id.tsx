@@ -33,8 +33,6 @@ function RouteComponent() {
     queryFn: () => getDocumentById(Number(id)),
   })
 
-  console.log(data)
-
   if (isLoading)
     return (
       <div className="flex items-center justify-center h-40">
@@ -53,10 +51,10 @@ function RouteComponent() {
             {data?.data?.fields.map((field) => (
               <Field>
                 <FieldLabel>
-                  {field.field_name}{' '}
-                  {field.is_mandatory && (
+                  {field.field_name}
+                  {field.is_mandatory ? (
                     <span className="text-destructive">*</span>
-                  )}
+                  ) : null}
                 </FieldLabel>
                 {field.field_type === 2 ? (
                   <Select>

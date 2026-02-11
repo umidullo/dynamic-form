@@ -10,7 +10,7 @@ const OptionsSchema = z.array(OptionSchema)
 export const formValueSchema = z
   .object({
     field_seq: z.number().min(1),
-    field_type: z.string(),
+    field_type: z.enum(['1', '2', '3']), // 1 - Input, 2 - Select, 3 - NumberInput
     select_values: z.string().optional(),
     field_name: z.string().min(1, 'Required'),
     is_mandatory: z.boolean(),

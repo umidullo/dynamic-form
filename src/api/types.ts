@@ -20,7 +20,7 @@ const documentResponseSchema = z.object({
   timestamp: z.string(),
 })
 
-const documentByIdFieldSchema = z.object({
+export const documentByIdFieldSchema = z.object({
   document_id: z.number(),
   field_name: z.string(),
   field_seq: z.number(),
