@@ -27,3 +27,10 @@ export const createDocument = async (data: TDocumentBody) => {
   })
   return await response.json()
 }
+
+export const deleteDocument = async (id: number) => {
+  const response = await fetch(`${API_BASE_URL}/documents/${id}`, {
+    method: 'DELETE',
+  })
+  return await response.json()
+}

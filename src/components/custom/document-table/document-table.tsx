@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { Button } from '@/components/ui/button'
 import {
   Table,
   TableBody,
@@ -9,9 +8,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { formatDate } from '@/lib/utils'
-import { Link } from '@tanstack/react-router'
 import { getDocuments } from '@/api/queries'
 import { Spinner } from '@/components/ui/spinner'
+import { ActionColumn } from '@/components/custom/document-table/action-column'
 
 export function DocumentTable() {
   const { data, isLoading } = useQuery({
@@ -45,11 +44,7 @@ export function DocumentTable() {
             <TableCell>{formatDate(document.created_at)}</TableCell>
             <TableCell>{document.field_count}</TableCell>
             <TableCell>
-              <Button asChild variant={'link'}>
-                <Link to={`/document/$id`} params={{ id: String(document.id) }}>
-                  Document preview
-                </Link>
-              </Button>
+              <ActionColumn id={document.id} />
             </TableCell>
           </TableRow>
         ))}

@@ -1,2 +1,3 @@
-import { DocumentTable } from "./DocumentTable";
-export default DocumentTable;
+import { DocumentTable } from './document-table'
+
+export default DocumentTable
