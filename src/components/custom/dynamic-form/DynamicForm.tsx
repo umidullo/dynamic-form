@@ -26,33 +26,8 @@ import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Textarea } from '@/components/ui/textarea'
 import { ScrollArea } from '@/components/ui/scroll-area'
-
-const selectOptions = [
-  { label: 'Input', value: '1' },
-  { label: 'Select', value: '2' },
-  { label: 'NumberInput', value: '3' },
-] as const
-
-const formValueSchema = z
-  .object({
-    field_seq: z.number().min(1),
-    field_type: z.string(),
-    select_values: z.string().optional(),
-    field_name: z.string().min(1, 'Required'),
-    is_mandatory: z.boolean(),
-  })
-  .refine(
-    (item) => item.field_type !== '2' || Boolean(item.select_values?.trim()),
-    {
-      message: 'Select options are required for Select field',
-      path: ['select_values'],
-    },
-  )
-
-const formSchema = z.object({
-  document_name: z.string().min(1, 'Required'),
-  form_values: z.array(formValueSchema),
-})
+import { selectOptions } from '@/components/custom/dynamic-form/constants'
+import { formSchema } from '@/components/custom/dynamic-form/types'
 
 export function DynamicForm() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -157,12 +132,12 @@ export function DynamicForm() {
                                 <SelectValue placeholder="Select" />
                               </SelectTrigger>
                               <SelectContent position="item-aligned">
-                                {selectOptions.map((language) => (
+                                {selectOptions.map((option) => (
                                   <SelectItem
-                                    key={language.value}
-                                    value={language.value}
+                                    key={option.value}
+                                    value={option.value}
                                   >
-                                    {language.label}
+                                    {option.label}
                                   </SelectItem>
                                 ))}
                               </SelectContent>
