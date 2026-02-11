@@ -1,4 +1,6 @@
 import { getDocumentById } from '@/api/queries'
+import GeneratedInput from '@/components/custom/generated-input.tsx'
+
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -7,15 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Field, FieldLabel } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+
 import { Spinner } from '@/components/ui/spinner'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
@@ -49,35 +43,7 @@ function RouteComponent() {
         <CardContent>
           <div className="flex flex-col gap-6">
             {data?.data?.fields.map((field) => (
-              <Field>
-                <FieldLabel>
-                  {field.field_name}
-                  {field.is_mandatory ? (
-                    <span className="text-destructive">*</span>
-                  ) : null}
-                </FieldLabel>
-                {field.field_type === 2 ? (
-                  <Select>
-                    <SelectTrigger className="w-45">
-                      <SelectValue placeholder="Select an option" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {field.select_values?.map(
-                        (
-                          option: { label: string; value: string },
-                          index: number,
-                        ) => (
-                          <SelectItem key={index} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ),
-                      )}
-                    </SelectContent>
-                  </Select>
-                ) : (
-                  <Input />
-                )}
-              </Field>
+              <GeneratedInput field={field} />
             ))}
           </div>
         </CardContent>
