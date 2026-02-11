@@ -10,30 +10,12 @@ import {
 } from '@/components/ui/table'
 import { formatDate } from '@/lib/utils'
 import { Link } from '@tanstack/react-router'
-
-type TData = {
-  data: {
-    created_at: string
-    document_name: string
-    field_count: number
-    id: number
-  }[]
-  success: boolean
-  pagination: {
-    page: number
-    limit: number
-    total: number
-  }
-  timestamp: string
-}
+import { getDocuments } from '@/api/queries'
 
 export function DocumentTable() {
   const { isPending, error, data, isFetching } = useQuery({
     queryKey: ['documents'],
-    queryFn: async (): Promise<TData> => {
-      const response = await fetch('http://localhost:3000/api/v1/documents')
-      return await response.json()
-    },
+    queryFn: getDocuments,
   })
 
   console.log(data)

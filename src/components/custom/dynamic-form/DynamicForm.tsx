@@ -28,8 +28,14 @@ import { Textarea } from '@/components/ui/textarea'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { selectOptions } from '@/components/custom/dynamic-form/constants'
 import { formSchema } from '@/components/custom/dynamic-form/types'
+import { useMutation } from '@tanstack/react-query'
+import { createDocument } from '@/api/queries'
+import type { TDocumentBody } from '@/api/types'
+import { Spinner } from '@/components/ui/spinner'
+import { useNavigate } from '@tanstack/react-router'
 
 export function DynamicForm() {
+  const navigate = useNavigate()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,13 +56,33 @@ export function DynamicForm() {
     name: 'form_values',
   })
 
+  const mutation = useMutation({
+    mutationFn: createDocument,
+    onSuccess: () => {
+      form.reset()
+      navigate({ to: '/' })
+    },
+  })
+
   function onSubmit(data: z.infer<typeof formSchema>) {
     console.log(data)
+    const createInput: TDocumentBody = {
+      document_name: data.document_name,
+      field_count: data.form_values.length,
+      form_values: data.form_values.map((field) => ({
+        field_seq: field.field_seq,
+        field_type: Number(field.field_type),
+        field_name: field.field_name,
+        is_mandatory: field.is_mandatory,
+        select_values: field.select_values ?? null,
+      })),
+    }
+    mutation.mutate(createInput)
   }
 
   return (
     <Card className="w-full sm:max-w-md">
-      <ScrollArea className="h-[500px]">
+      <ScrollArea className="h-125">
         <CardContent>
           <form id="form-rhf-array" onSubmit={form.handleSubmit(onSubmit)}>
             <FieldSet className="gap-4">
@@ -204,8 +230,9 @@ export function DynamicForm() {
                           data-invalid={fieldState.invalid}
                         >
                           <Checkbox
+                            name={field.name}
                             checked={field.value}
-                            onChange={field.onChange}
+                            onCheckedChange={field.onChange}
                           />
                           <FieldLabel className="font-normal">
                             Mandatory
@@ -248,7 +275,12 @@ export function DynamicForm() {
           <Button type="button" variant="outline" onClick={() => form.reset()}>
             Reset
           </Button>
-          <Button type="submit" form="form-rhf-array">
+          <Button
+            type="submit"
+            form="form-rhf-array"
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending && <Spinner data-icon="inline-start" />}
             Save
           </Button>
         </Field>
